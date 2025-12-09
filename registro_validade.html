@@ -7,8 +7,8 @@
     <style>
         /* --- VARIÁVEIS DE CSS (Paleta Profissional) --- */
         :root {
-            --azul-escuro: #003366; /* Azul predominante da marca */
-            --azul-claro-fundo: #f0f4f8; /* Fundo cinza/azulado claro para contraste */
+            --azul-escuro: #003366;
+            --azul-claro-fundo: #f0f4f8;
             --branco: #ffffff;
             --texto-escuro: #2c3e50;
             --texto-cinza: #546e7a;
@@ -44,15 +44,14 @@
             margin: 0 auto;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* Alinha logo a esquerda */
+            justify-content: flex-start;
             gap: 20px;
         }
 
         .logo-container img {
             display: block;
-            max-height: 55px; /* Garante que a logo não fique muito grande */
+            max-height: 55px;
             width: auto;
-            /* Filtro opcional caso sua imagem não seja branca pura: brightness(0) invert(1); */
         }
 
         .header-title h1 {
@@ -68,7 +67,7 @@
             font-weight: 300;
         }
 
-        /* --- CONTAINER PRINCIPAL (Layout 2 Colunas) --- */
+        /* --- CONTAINER PRINCIPAL --- */
         .main-container {
             flex: 1;
             width: 100%;
@@ -76,14 +75,14 @@
             margin: 30px auto;
             padding: 0 20px;
             display: grid;
-            grid-template-columns: 1fr; /* Mobile: 1 coluna */
+            grid-template-columns: 1fr;
             gap: 25px;
             box-sizing: border-box;
         }
 
         @media (min-width: 900px) {
             .main-container {
-                grid-template-columns: 400px 1fr; /* Desktop: Form fixo, Lista flexível */
+                grid-template-columns: 400px 1fr;
                 align-items: start;
             }
         }
@@ -160,7 +159,6 @@
             color: var(--texto-escuro);
         }
         
-        /* Estilo de Inputs Padrão */
         .form-control {
             width: 100%;
             padding: 12px 15px;
@@ -185,6 +183,15 @@
             cursor: not-allowed;
         }
 
+        /* Estilo especial para o select de loja */
+        #store-select {
+            border: 2px solid var(--verde-sucesso);
+            background-color: #f0fff4;
+            color: #003366;
+            font-weight: bold;
+            height: 50px;
+        }
+
         .form-row {
             display: flex;
             gap: 15px;
@@ -206,17 +213,10 @@
         }
         .btn:active { transform: translateY(1px); }
 
-        .btn-primary {
-            background-color: var(--azul-escuro);
-            color: var(--branco);
-        }
+        .btn-primary { background-color: var(--azul-escuro); color: var(--branco); }
         .btn-primary:hover { background-color: #002244; }
 
-        .btn-success {
-            background-color: var(--verde-sucesso);
-            color: var(--branco);
-            margin-top: 10px;
-        }
+        .btn-success { background-color: var(--verde-sucesso); color: var(--branco); margin-top: 10px; }
         .btn-success:hover { background-color: #219653; }
         
         .btn-outline-danger {
@@ -230,14 +230,12 @@
         .btn-outline-danger:hover { background-color: #fff5f5; }
 
         /* --- LISTA DE ITENS --- */
-        .list-container {
-            height: 100%; /* Ocupa toda altura no desktop */
-        }
+        .list-container { height: 100%; }
         .item-list {
             list-style: none;
             padding: 0;
             margin: 0;
-            max-height: 500px; /* Altura máxima com scroll */
+            max-height: 500px;
             overflow-y: auto;
             border-bottom: 1px solid var(--borda-suave);
         }
@@ -251,13 +249,10 @@
             transition: background-color 0.2s;
             position: relative;
         }
-        /* Indicador lateral azul */
         .item-list li::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
+            left: 0; top: 0; bottom: 0;
             width: 4px;
             background-color: var(--azul-escuro);
             opacity: 0;
@@ -275,26 +270,30 @@
             display: flex;
             gap: 15px;
         }
-        .detail-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
+        .detail-badge { display: inline-flex; align-items: center; gap: 5px; }
         .detail-badge strong { color: var(--azul-escuro); }
+        
+        /* Nova etiqueta de loja na lista */
+        .store-tag {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            background-color: var(--azul-escuro);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
 
         .btn-icon-remove {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border-radius: 6px;
             background-color: transparent;
             color: var(--texto-cinza);
             border: 1px solid var(--borda-suave);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            font-size: 1.2em;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; font-size: 1.2em;
         }
         .btn-icon-remove:hover {
             background-color: var(--vermelho-erro);
@@ -310,7 +309,6 @@
             font-size: 0.8em;
         }
 
-        /* Footer da lista (botões de ação) */
         .list-footer {
             padding: 20px 25px;
             background-color: #fafbfc;
@@ -341,6 +339,53 @@
         </div>
         <div class="card-body">
             <form id="validity-form">
+                
+                <div class="form-group">
+                    <label style="color: var(--verde-sucesso);">📍 Selecione a Loja / Filial</label>
+                    <select id="store-select" class="form-control" required>
+                        <option value="">-- CLIQUE PARA SELECIONAR --</option>
+                        <option value="LOJA 01 - POUPE FARMA APUAIRES">LOJA 01 - POUPE FARMA APUAIRES</option>
+                        <option value="LOJA 02 - ULTRA POPULAR TRAIRI">LOJA 02 - ULTRA POPULAR TRAIRI</option>
+                        <option value="LOJA 03 - GOTA MAIS MARACANAU">LOJA 03 - GOTA MAIS MARACANAU</option>
+                        <option value="LOJA 04 - ULTRA POPULAR MARANGUAPE">LOJA 04 - ULTRA POPULAR MARANGUAPE</option>
+                        <option value="LOJA 05 - ULTRA POPULAR M. LUCENA">LOJA 05 - ULTRA POPULAR M. LUCENA</option>
+                        <option value="LOJA 06 - POUPE FARMA PENTECOSTE">LOJA 06 - POUPE FARMA PENTECOSTE</option>
+                        <option value="LOJA 07 - ULTRA POPULAR ITAPIPOCA">LOJA 07 - ULTRA POPULAR ITAPIPOCA</option>
+                        <option value="LOJA 08 - ULTRA POPULAR PARAIPABA">LOJA 08 - ULTRA POPULAR PARAIPABA</option>
+                        <option value="LOJA 09 - ULTRA POPULAR PARACURU">LOJA 09 - ULTRA POPULAR PARACURU</option>
+                        <option value="LOJA 10 - ULTRA POPULAR MONTESE">LOJA 10 - ULTRA POPULAR MONTESE</option>
+                        <option value="LOJA 11 - ULTRA POPULAR CANINDE I">LOJA 11 - ULTRA POPULAR CANINDE I</option>
+                        <option value="LOJA 12 - POUPE FARMA URUBURETAMA Vermelhinha">LOJA 12 - POUPE FARMA URUBURETAMA Vermelhinha</option>
+                        <option value="LOJA 13 - POUPE FARMA URUBURETAMA Amarelinha">LOJA 13 - POUPE FARMA URUBURETAMA Amarelinha</option>
+                        <option value="LOJA 14 - MAXI POPULAR ITAPIPOCA">LOJA 14 - MAXI POPULAR ITAPIPOCA</option>
+                        <option value="LOJA 15 - POUPE FARMA AMONTADA Vermelhinha">LOJA 15 - POUPE FARMA AMONTADA Vermelhinha</option>
+                        <option value="LOJA 16 - ULTRA POPULAR SAO GONÇALO DO AMARANTE">LOJA 16 - ULTRA POPULAR SAO GONÇALO DO AMARANTE</option>
+                        <option value="LOJA 17 - ULTRA POPULAR ITAPAJE">LOJA 17 - ULTRA POPULAR ITAPAJE</option>
+                        <option value="LOJA 18 - POUPE FARMA AMONTADA Amarelinha">LOJA 18 - POUPE FARMA AMONTADA Amarelinha</option>
+                        <option value="LOJA 19 - ULTRA POPULAR SOBRAL I">LOJA 19 - ULTRA POPULAR SOBRAL I</option>
+                        <option value="LOJA 22 - ULTRA POPULAR CANINDE II">LOJA 22 - ULTRA POPULAR CANINDE II</option>
+                        <option value="LOJA 23 - MAXI POPULAR CANINDE">LOJA 23 - MAXI POPULAR CANINDE</option>
+                        <option value="LOJA 27 - ULTRAPOPULAR LIMOEIRO DO NORTE">LOJA 27 - ULTRAPOPULAR LIMOEIRO DO NORTE</option>
+                        <option value="LOJA 28 - ULTRA POPULAR JUREMA">LOJA 28 - ULTRA POPULAR JUREMA</option>
+                        <option value="LOJA 29 - ULTRA POPULAR ITAITINGA">LOJA 29 - ULTRA POPULAR ITAITINGA</option>
+                        <option value="LOJA 30 - GOTA MAIS PR. FERREIRA">LOJA 30 - GOTA MAIS PR. FERREIRA</option>
+                        <option value="LOJA 31 - ULTRA POPULAR AQUIRAZ">LOJA 31 - ULTRA POPULAR AQUIRAZ</option>
+                        <option value="LOJA 32 - POUPE FARMA SÃO BENEDITO">LOJA 32 - POUPE FARMA SÃO BENEDITO</option>
+                        <option value="LOJA 33 - ULTRA POPULAR VIÇOSA">LOJA 33 - ULTRA POPULAR VIÇOSA</option>
+                        <option value="LOJA 34 - ULTRAPOPULAR TEJUÇUOCA">LOJA 34 - ULTRAPOPULAR TEJUÇUOCA</option>
+                        <option value="LOJA 35 - MAXI POPULAR TRAIRI">LOJA 35 - MAXI POPULAR TRAIRI</option>
+                        <option value="LOJA 36 - ULTRA POPULAR FCO. SA">LOJA 36 - ULTRA POPULAR FCO. SA</option>
+                        <option value="LOJA 37 - ULTRA POPULAR IGUATU">LOJA 37 - ULTRA POPULAR IGUATU</option>
+                        <option value="LOJA 38 - ULTRA POPULAR TIANGUA">LOJA 38 - ULTRA POPULAR TIANGUA</option>
+                        <option value="LOJA 39 - ULTRA POPULAR CONJ. CEARA">LOJA 39 - ULTRA POPULAR CONJ. CEARA</option>
+                        <option value="LOJA 42 - ULTRA POPULAR RUSSAS">LOJA 42 - ULTRA POPULAR RUSSAS</option>
+                        <option value="LOJA 43 - DROGARIA ULTRA POPULAR BELA CRUZ">LOJA 43 - DROGARIA ULTRA POPULAR BELA CRUZ</option>
+                        <option value="LOJA 45 - FARMA VIP ITAREMA">LOJA 45 - FARMA VIP ITAREMA</option>
+                        <option value="LOJA 46 - ULTRA POPULAR ACARAU">LOJA 46 - ULTRA POPULAR ACARAU</option>
+                    </select>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
                 
                 <div class="barcode-wrapper">
                     <div class="barcode-field">
@@ -393,12 +438,10 @@
 </div>
 
 <script>
-    // --- MOCK DB (Inalterado) ---
+    // --- MOCK DB para teste local ---
     const MOCK_DB = {
         "789101010": "DIPIRONA SÓDICA 500MG",
-        "789202020": "PARACETAMOL 750MG",
-        "789303030": "IBUPROFENO 600MG",
-        "123456": "PRODUTO TESTE SB FARMA" 
+        "789202020": "PARACETAMOL 750MG"
     };
 
     const ENDPOINT_BUSCA = '/api/produto?codigo='; 
@@ -409,13 +452,27 @@
     const exportBtn = document.getElementById('export-btn');
     const clearBtn = document.getElementById('clear-btn');
     const countSpan = document.getElementById('count-badge');
+    const storeSelect = document.getElementById('store-select'); 
 
     let pendingItemsData = JSON.parse(localStorage.getItem('sb_inventory_data')) || [];
+
+    // --- CARREGAR LOJA SALVA ---
+    // Recupera a loja que estava selecionada antes de fechar a página
+    const savedStore = localStorage.getItem('sb_store_pref');
+    if (savedStore) {
+        storeSelect.value = savedStore;
+    }
+
+    // Salvar loja ao mudar
+    storeSelect.addEventListener('change', () => {
+        localStorage.setItem('sb_store_pref', storeSelect.value);
+    });
 
     // --- FUNÇÕES ---
 
     async function lookupProduct(barcode) {
         productNameInput.value = 'Buscando...';
+        // Tenta Mock primeiro
         if (MOCK_DB[barcode]) return MOCK_DB[barcode];
 
         try {
@@ -434,21 +491,22 @@
         countSpan.textContent = pendingItemsData.length;
         
         if (pendingItemsData.length === 0) {
-            // Estado vazio visualmente mais agradável
             pendingList.innerHTML = `
                 <li style="flex-direction: column; align-items: center; justify-content: center; padding: 40px; color: var(--texto-cinza); border:none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="color: #dce4ec; margin-bottom: 10px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                     <span>Nenhum item bipado ainda.</span>
                 </li>`;
             exportBtn.disabled = true;
             return;
         }
 
-        // Renderização dos itens com novo layout
+        // Renderização com a etiqueta da Loja
         pendingList.innerHTML = pendingItemsData.map((item, index) => `
             <li>
                 <div class="item-info">
-                    <span class="item-name">${item.produto}</span>
+                    <div style="margin-bottom: 4px;">
+                        <span class="store-tag">${item.loja || 'LOJA'}</span>
+                        <span class="item-name">${item.produto}</span>
+                    </div>
                     <div class="item-details">
                         <span class="detail-badge">Lote: <strong>${item.lote}</strong></span>
                         <span class="detail-badge" style="border-left: 1px solid #eee; padding-left: 15px;">Val: <strong>${formatDateForDisplay(item.validade)}</strong></span>
@@ -472,14 +530,13 @@
     }
 
     window.removeItem = function(index) {
-        // Confirmação simplificada
         if(confirm('Deseja realmente remover este item da lista?')) {
             pendingItemsData.splice(index, 1);
             renderPendingList();
         }
     };
 
-    // --- EVENTOS (Inalterados) ---
+    // --- EVENTOS ---
     barcodeInput.addEventListener('change', async (e) => {
         const code = e.target.value.trim();
         if (code.length > 2) {
@@ -493,23 +550,34 @@
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
+
+        // 1. Validação da Loja (Obrigatório)
+        if (!storeSelect.value) {
+            alert('⚠️ POR FAVOR, SELECIONE A LOJA NO TOPO DO FORMULÁRIO.');
+            storeSelect.focus();
+            return;
+        }
+
         const produto = productNameInput.value;
         if (produto.includes('Aguardando') || produto.includes('NÃO CADASTRADO')) {
             alert('Bipe um produto válido primeiro.');
             barcodeInput.focus();
             return;
         }
+
         const newItem = {
+            loja: storeSelect.value, // Salva a loja
             codigo_barras: barcodeInput.value,
             produto: productNameInput.value,
             lote: document.getElementById('lot').value.toUpperCase(),
             quantidade: document.getElementById('quantity').value,
             validade: document.getElementById('expiry-date').value
         };
-        pendingItemsData.unshift(newItem); // Adiciona ao TOPO da lista agora
+
+        pendingItemsData.unshift(newItem); 
         renderPendingList();
         
-        // Reset do form
+        // Reset do form (Mantendo a loja selecionada)
         document.getElementById('lot').value = '';
         document.getElementById('quantity').value = '';
         document.getElementById('expiry-date').value = '';
@@ -521,13 +589,21 @@
     exportBtn.addEventListener('click', () => {
         if (pendingItemsData.length === 0) return;
         const BOM = "\uFEFF"; 
-        const headers = ['CODIGO', 'PRODUTO', 'LOTE', 'QTD', 'VALIDADE'];
+        // Adicionado cabeçalho LOJA
+        const headers = ['LOJA', 'CODIGO', 'PRODUTO', 'LOTE', 'QTD', 'VALIDADE'];
         let csv = BOM + headers.join(';') + '\n';
+        
         pendingItemsData.forEach(item => {
             csv += [
-                item.codigo_barras, item.produto, item.lote, item.quantidade, formatDateForDisplay(item.validade)
+                item.loja, // Adicionado dados da loja
+                item.codigo_barras, 
+                item.produto, 
+                item.lote, 
+                item.quantidade, 
+                formatDateForDisplay(item.validade)
             ].join(';') + '\n';
         });
+
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
@@ -549,7 +625,7 @@
 
     // Inicialização
     renderPendingList();
-    barcodeInput.focus();
+    if(savedStore) barcodeInput.focus(); // Se já tem loja, foca no scanner
 </script>
 </body>
 </html>
