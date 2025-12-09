@@ -389,7 +389,7 @@
                 
                 <div class="barcode-wrapper">
                     <div class="barcode-field">
-                        <input type="text" id="barcode" placeholder="" autofocus autocomplete="off">
+                        <input type="text" id="barcode" placeholder="" inputmode="numeric" pattern="[0-9]*" autofocus autocomplete="off">
                     </div>
                     <label class="barcode-label">BIPAR CÓDIGO DE BARRAS AQUI</label>
                 </div>
@@ -457,7 +457,6 @@
     let pendingItemsData = JSON.parse(localStorage.getItem('sb_inventory_data')) || [];
 
     // --- CARREGAR LOJA SALVA ---
-    // Recupera a loja que estava selecionada antes de fechar a página
     const savedStore = localStorage.getItem('sb_store_pref');
     if (savedStore) {
         storeSelect.value = savedStore;
@@ -482,9 +481,10 @@
                 return data.nome;
             } else if (response.status === 404) {
                  return 'PRODUTO NÃO CADASTRADO';
+            } else {
+                 return 'ERRO DE SISTEMA (VERIFICAR VERCEL)';
             }
-        } catch (e) { console.log("API offline."); }
-        return 'PRODUTO NÃO CADASTRADO';
+        } catch (e) { console.log("API offline."); return 'ERRO DE REDE'; }
     }
 
     function renderPendingList() {
@@ -542,7 +542,7 @@
         if (code.length > 2) {
             const name = await lookupProduct(code);
             productNameInput.value = name;
-            if (name !== 'PRODUTO NÃO CADASTRADO') {
+            if (name !== 'PRODUTO NÃO CADASTRADO' && !name.includes('ERRO')) {
                 document.getElementById('lot').focus();
             }
         }
@@ -551,7 +551,6 @@
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // 1. Validação da Loja (Obrigatório)
         if (!storeSelect.value) {
             alert('⚠️ POR FAVOR, SELECIONE A LOJA NO TOPO DO FORMULÁRIO.');
             storeSelect.focus();
@@ -559,14 +558,14 @@
         }
 
         const produto = productNameInput.value;
-        if (produto.includes('Aguardando') || produto.includes('NÃO CADASTRADO')) {
+        if (produto.includes('Aguardando') || produto.includes('NÃO CADASTRADO') || produto.includes('ERRO')) {
             alert('Bipe um produto válido primeiro.');
             barcodeInput.focus();
             return;
         }
 
         const newItem = {
-            loja: storeSelect.value, // Salva a loja
+            loja: storeSelect.value,
             codigo_barras: barcodeInput.value,
             produto: productNameInput.value,
             lote: document.getElementById('lot').value.toUpperCase(),
@@ -577,7 +576,6 @@
         pendingItemsData.unshift(newItem); 
         renderPendingList();
         
-        // Reset do form (Mantendo a loja selecionada)
         document.getElementById('lot').value = '';
         document.getElementById('quantity').value = '';
         document.getElementById('expiry-date').value = '';
@@ -589,13 +587,12 @@
     exportBtn.addEventListener('click', () => {
         if (pendingItemsData.length === 0) return;
         const BOM = "\uFEFF"; 
-        // Adicionado cabeçalho LOJA
         const headers = ['LOJA', 'CODIGO', 'PRODUTO', 'LOTE', 'QTD', 'VALIDADE'];
         let csv = BOM + headers.join(';') + '\n';
         
         pendingItemsData.forEach(item => {
             csv += [
-                item.loja, // Adicionado dados da loja
+                item.loja,
                 item.codigo_barras, 
                 item.produto, 
                 item.lote, 
@@ -623,9 +620,8 @@
         }
     });
 
-    // Inicialização
     renderPendingList();
-    if(savedStore) barcodeInput.focus(); // Se já tem loja, foca no scanner
+    if(savedStore) barcodeInput.focus();
 </script>
 </body>
 </html>
