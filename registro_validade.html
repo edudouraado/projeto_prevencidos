@@ -51,6 +51,14 @@
             letter-spacing: 2px;
             margin-bottom: 5px;
         }
+        .logo img {
+            height: 200px; /* Aumentado para ficar maior conforme solicitado */
+            max-height: 64px;
+            width: auto;
+            object-fit: contain;
+            display: inline-block;
+            vertical-align: middle;
+        }
         .subtitle {
             font-size: 1.1em;
             font-weight: 300;
@@ -173,7 +181,7 @@
 
 <div class="container">
     <header>
-        <div class="logo">SB FARMA</div>
+        <div class="logo"><img src="SB_farma_oficial_branco-01.png" alt="SB FARMA"></div>
         <div class="subtitle">Registro Rápido de Validades</div>
     </header>
     
@@ -222,7 +230,7 @@
 <script>
     // JS: Lógica para Conexão com a API (Backend Node.js)
     
-    const ENDPOINT_BUSCA = 'http://localhost:3000/api/produto/'; // SEU ENDPOINT NODE.JS
+    const ENDPOINT_BUSCA = '/api/produto/'; // Endpoint relativo (Vercel Serverless Function)
     
     const barcodeInput = document.getElementById('barcode');
     const productNameInput = document.getElementById('product-name');
