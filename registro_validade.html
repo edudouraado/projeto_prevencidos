@@ -5,379 +5,551 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventário de Validade - SB FARMA</title>
     <style>
-        /* CSS: Tema SB FARMA (Azul Escuro e Branco) e Estilo Profissional */
+        /* --- VARIÁVEIS DE CSS (Paleta Profissional) --- */
         :root {
-            --cor-primaria: #004a8c; /* Azul Escuro - SB FARMA */
-            --cor-fundo: #f4f6f9;
-            --cor-card: #ffffff;
-            --cor-texto: #333333;
-            --cor-sucesso: #28a745;
-            --cor-foco: #ffc107; /* Amarelo para destaque de input */
+            --azul-escuro: #003366; /* Azul predominante da marca */
+            --azul-claro-fundo: #f0f4f8; /* Fundo cinza/azulado claro para contraste */
+            --branco: #ffffff;
+            --texto-escuro: #2c3e50;
+            --texto-cinza: #546e7a;
+            --verde-sucesso: #27ae60;
+            --vermelho-erro: #c0392b;
+            --borda-suave: #dce4ec;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--cor-fundo);
-            color: var(--cor-texto);
+            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+            background-color: var(--azul-claro-fundo);
+            color: var(--texto-escuro);
             margin: 0;
-            padding: 20px;
             display: flex;
             flex-direction: column;
-            align-items: center;
             min-height: 100vh;
         }
 
-        .container {
-            width: 100%;
-            max-width: 650px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 16px;
-            background-color: var(--cor-card);
-            margin-bottom: 30px;
+        /* --- HEADER SÓLIDO --- */
+        header {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        /* LOGO E HEADER */
-        header {
-            background-color: var(--cor-primaria);
-            color: white;
-            padding: 15px 20px;
-            text-align: center;
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
+        .header-content {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Alinha logo a esquerda */
+            gap: 20px;
         }
-        .logo {
-            font-size: 2em;
-            font-weight: 900;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-        }
-        .logo img {
-            height: 200px; /* Aumentado para ficar maior conforme solicitado */
-            max-height: 64px;
+
+        .logo-container img {
+            display: block;
+            max-height: 55px; /* Garante que a logo não fique muito grande */
             width: auto;
-            object-fit: contain;
-            display: inline-block;
-            vertical-align: middle;
+            /* Filtro opcional caso sua imagem não seja branca pura: brightness(0) invert(1); */
         }
-        .subtitle {
-            font-size: 1.1em;
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .header-title p {
+            margin: 2px 0 0 0;
+            font-size: 0.9em;
+            opacity: 0.8;
             font-weight: 300;
         }
-        
-        .form-section {
-            padding: 30px;
+
+        /* --- CONTAINER PRINCIPAL (Layout 2 Colunas) --- */
+        .main-container {
+            flex: 1;
+            width: 100%;
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr; /* Mobile: 1 coluna */
+            gap: 25px;
+            box-sizing: border-box;
         }
 
-        /* CAMPO DE CÓDIGO DE BARRAS (Foco Principal) */
-        .barcode-field {
-            margin-bottom: 35px;
+        @media (min-width: 900px) {
+            .main-container {
+                grid-template-columns: 400px 1fr; /* Desktop: Form fixo, Lista flexível */
+                align-items: start;
+            }
         }
-        .barcode-field input {
-            width: 100%;
-            padding: 25px 20px;
-            font-size: 1.8em;
-            text-align: center;
-            border: 4px solid var(--cor-primaria);
-            border-radius: 12px;
-            box-sizing: border-box;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            font-weight: 700;
-        }
-        .barcode-field input:focus {
-            border-color: var(--cor-foco);
-            box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.5);
-            outline: none;
-        }
-        
-        /* ESTILIZAÇÃO DOS CAMPOS SECUNDÁRIOS */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.95em;
-            color: #555;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #ced4da;
+
+        /* --- CARTÕES (CARDS) --- */
+        .card {
+            background-color: var(--branco);
             border-radius: 8px;
-            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--borda-suave);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--borda-suave);
+            background-color: #fafbfc;
+        }
+        .card-header h3 {
+            margin: 0;
+            color: var(--azul-escuro);
             font-size: 1.1em;
-        }
-        
-        /* CAMPO AUTOPREENCHIDO (NOME DO PRODUTO) */
-        #product-name {
-            background-color: #f1f1f1;
-            font-weight: bold;
-            color: var(--cor-primaria);
-            cursor: default;
-        }
-
-        /* BOTÕES */
-        .btn-submit, .btn-export {
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s;
-            margin-top: 15px;
             font-weight: 700;
-        }
-        .btn-submit {
-            background-color: var(--cor-sucesso);
-            color: white;
-        }
-        .btn-submit:active {
-            transform: translateY(1px);
-        }
-        .btn-export {
-            background-color: var(--cor-primaria);
-            color: white;
-            margin-bottom: 20px;
-        }
-        .btn-export:hover:not(:disabled) {
-            background-color: #003a6e;
-        }
-        .btn-export:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-        
-        /* LISTA DE ITENS PENDENTES */
-        .pending-items {
-            border-top: 1px solid #eeeeee;
-            padding-top: 25px;
-        }
-        .item-list {
-            max-height: 250px;
-            overflow-y: auto;
-            list-style: none;
-            padding: 0;
-        }
-        .item-list li {
-            border-left: 5px solid var(--cor-primaria);
-            background-color: #f8f9fa;
-            padding: 10px;
-            margin-bottom: 8px;
-            font-size: 0.95em;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .item-list .data-val {
+        
+        .card-body {
+            padding: 25px;
+            flex: 1;
+        }
+
+        /* --- FORMULÁRIO --- */
+        .barcode-wrapper {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        .barcode-field input {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.3em;
+            text-align: center;
+            border: 3px solid var(--azul-escuro);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            background-color: #f8fbff;
+            transition: all 0.3s ease;
+        }
+        .barcode-field input:focus {
+            outline: none;
+            background-color: var(--branco);
+            box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.15);
+        }
+        .barcode-label {
+            text-align: center;
+            display: block;
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: var(--texto-cinza);
             font-weight: 600;
-            color: #005691;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            color: var(--texto-escuro);
+        }
+        
+        /* Estilo de Inputs Padrão */
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--borda-suave);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: var(--texto-escuro);
+            transition: border-color 0.3s;
+            background-color: #fcfdfe;
+        }
+        .form-control:focus {
+            border-color: var(--azul-escuro);
+            outline: none;
+            background-color: var(--branco);
+        }
+        .form-control[readonly] {
+            background-color: #e9ecef;
+            color: var(--texto-cinza);
+            font-weight: 600;
+            border-color: #dce4ec;
+            cursor: not-allowed;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        .form-row .form-group { flex: 1; }
+
+        /* --- BOTÕES --- */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn:active { transform: translateY(1px); }
+
+        .btn-primary {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+        }
+        .btn-primary:hover { background-color: #002244; }
+
+        .btn-success {
+            background-color: var(--verde-sucesso);
+            color: var(--branco);
+            margin-top: 10px;
+        }
+        .btn-success:hover { background-color: #219653; }
+        
+        .btn-outline-danger {
+            background-color: transparent;
+            border: 2px solid var(--vermelho-erro);
+            color: var(--vermelho-erro);
+            margin-top: 15px;
+            padding: 10px;
             font-size: 0.9em;
         }
+        .btn-outline-danger:hover { background-color: #fff5f5; }
+
+        /* --- LISTA DE ITENS --- */
+        .list-container {
+            height: 100%; /* Ocupa toda altura no desktop */
+        }
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 500px; /* Altura máxima com scroll */
+            overflow-y: auto;
+            border-bottom: 1px solid var(--borda-suave);
+        }
+        .item-list li {
+            background-color: var(--branco);
+            border-bottom: 1px solid var(--borda-suave);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+            position: relative;
+        }
+        /* Indicador lateral azul */
+        .item-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--azul-escuro);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .item-list li:hover { background-color: #f8fbff; }
+        .item-list li:hover::before { opacity: 1; }
+
+        .item-info { display: flex; flex-direction: column; }
+        .item-name { font-weight: 700; color: var(--texto-escuro); font-size: 1.05em; }
+        .item-details { 
+            font-size: 0.85em; 
+            color: var(--texto-cinza); 
+            margin-top: 5px;
+            display: flex;
+            gap: 15px;
+        }
+        .detail-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .detail-badge strong { color: var(--azul-escuro); }
+
+        .btn-icon-remove {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background-color: transparent;
+            color: var(--texto-cinza);
+            border: 1px solid var(--borda-suave);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.2em;
+        }
+        .btn-icon-remove:hover {
+            background-color: var(--vermelho-erro);
+            color: var(--branco);
+            border-color: var(--vermelho-erro);
+        }
+
+        #count-badge {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+
+        /* Footer da lista (botões de ação) */
+        .list-footer {
+            padding: 20px 25px;
+            background-color: #fafbfc;
+            border-top: 1px solid var(--borda-suave);
+        }
+
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <div class="logo"><img src="SB_farma_oficial_branco-01.png" alt="SB FARMA"></div>
-        <div class="subtitle">Registro Rápido de Validades</div>
-    </header>
+<header>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="SB_farma_oficial_branco-01.png" alt="SB Farma Logo">
+        </div>
+        <div class="header-title">
+            <h1>Inventário de Validade</h1>
+            <p>Sistema de Coleta Rápida</p>
+        </div>
+    </div>
+</header>
+
+<div class="main-container">
     
-    <form id="validity-form" class="form-section">
-        <div class="barcode-field">
-            <input type="text" id="barcode" placeholder="BIPAR CÓDIGO DE BARRAS" autofocus required autocomplete="off">
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de Item</h3>
+        </div>
+        <div class="card-body">
+            <form id="validity-form">
+                
+                <div class="barcode-wrapper">
+                    <div class="barcode-field">
+                        <input type="text" id="barcode" placeholder="" autofocus autocomplete="off">
+                    </div>
+                    <label class="barcode-label">BIPAR CÓDIGO DE BARRAS AQUI</label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product-name">Produto Identificado</label>
+                    <input type="text" id="product-name" class="form-control" value="Aguardando Leitura..." readonly>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lot">Lote</label>
+                        <input type="text" id="lot" class="form-control" placeholder="Ex: 24B01A" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Qtd.</label>
+                        <input type="number" id="quantity" class="form-control" min="1" placeholder="Ex: 5" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="expiry-date">Validade</label>
+                    <input type="date" id="expiry-date" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">CONFIRMAR E ADICIONAR</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="card list-container">
+        <div class="card-header">
+            <h3>Itens na Sessão <span id="count-badge">0</span></h3>
         </div>
         
-        <div class="form-group">
-            <label for="product-name">Produto (Busca no Sistema)</label>
-            <input type="text" id="product-name" value="Aguardando Leitura..." readonly>
-        </div>
-        
-        <div class="form-group">
-            <label for="lot">Lote</label>
-            <input type="text" id="lot" placeholder="Ex: 24B01A" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="quantity">Quantidade</label>
-            <input type="number" id="quantity" min="1" placeholder="Ex: 5" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="expiry-date">Data de Validade (Dia/Mês/Ano)</label>
-            <input type="date" id="expiry-date" required>
+        <div style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
+            <ul id="pending-list" class="item-list">
+                </ul>
         </div>
 
-        <button type="submit" class="btn-submit">
-            ADICIONAR ITEM À LISTA
-        </button>
-    </form>
-    
-    <div class="form-section pending-items">
-        <button id="export-btn" class="btn-export" disabled>
-            EXPORTAR TUDO PARA CSV (Excel)
-        </button>
-        
-        <h4>Itens na Lista (Prontos para Exportar)</h4>
-        <ul id="pending-list" class="item-list">
-            <li>Nenhum item adicionado ainda.</li>
-        </ul>
+        <div class="list-footer">
+            <button id="export-btn" class="btn btn-primary" disabled>BAIXAR PLANILHA EXCEL (CSV)</button>
+            <button id="clear-btn" class="btn btn-outline-danger">Limpar Lista</button>
+        </div>
     </div>
 </div>
 
 <script>
-    // JS: Lógica para Conexão com a API (Backend Node.js)
-    
-    const ENDPOINT_BUSCA = '/api/produto/'; // Endpoint relativo (Vercel Serverless Function)
-    
+    // --- MOCK DB (Inalterado) ---
+    const MOCK_DB = {
+        "789101010": "DIPIRONA SÓDICA 500MG",
+        "789202020": "PARACETAMOL 750MG",
+        "789303030": "IBUPROFENO 600MG",
+        "123456": "PRODUTO TESTE SB FARMA" 
+    };
+
+    const ENDPOINT_BUSCA = '/api/produto?codigo='; 
     const barcodeInput = document.getElementById('barcode');
     const productNameInput = document.getElementById('product-name');
     const form = document.getElementById('validity-form');
     const pendingList = document.getElementById('pending-list');
     const exportBtn = document.getElementById('export-btn');
-    let pendingItemsData = [];
-    
-    // 1. FUNÇÃO DE BUSCA REAL (Conexão com a API Node.js/SQL)
-    async function lookupProduct(barcode) {
-        try {
-            productNameInput.value = 'Buscando no SQL...';
-            
-            // Faz a chamada GET para o endereço da sua API
-            const response = await fetch(ENDPOINT_BUSCA + barcode); 
-            
-            if (response.status === 404) {
-                 return 'Produto Não Encontrado';
-            }
+    const clearBtn = document.getElementById('clear-btn');
+    const countSpan = document.getElementById('count-badge');
 
-            const data = await response.json();
-            
-            // Retorna o nome do produto que veio do servidor (Node.js)
-            return data.nome || 'Produto Não Encontrado';
-            
-        } catch (error) {
-            console.error('Falha na comunicação com o servidor:', error);
-            // Se o Node.js não estiver rodando, essa mensagem será exibida
-            return 'Falha na Rede/Servidor Desligado'; 
-        }
+    let pendingItemsData = JSON.parse(localStorage.getItem('sb_inventory_data')) || [];
+
+    // --- FUNÇÕES ---
+
+    async function lookupProduct(barcode) {
+        productNameInput.value = 'Buscando...';
+        if (MOCK_DB[barcode]) return MOCK_DB[barcode];
+
+        try {
+            const response = await fetch(ENDPOINT_BUSCA + barcode);
+            if (response.ok) {
+                const data = await response.json();
+                return data.nome;
+            } else if (response.status === 404) {
+                 return 'PRODUTO NÃO CADASTRADO';
+            }
+        } catch (e) { console.log("API offline."); }
+        return 'PRODUTO NÃO CADASTRADO';
     }
 
-
-    // 2. AUTOMAÇÃO: Bipar Código de Barras e Buscar Produto
-    barcodeInput.addEventListener('change', async (e) => {
-        const scannedBarcode = e.target.value.trim();
-        if (scannedBarcode.length > 5) {
-            const productName = await lookupProduct(scannedBarcode);
-            productNameInput.value = productName;
-            
-            // Move o foco para o próximo campo (Lote) se o produto for válido
-            if (productName !== 'Produto Não Encontrado' && productName !== 'Falha na Rede/Servidor Desligado') {
-                document.getElementById('lot').focus();
-            }
-        }
-    });
-
-    // 3. AUTOMAÇÃO: Processar o Formulário (Adicionar Item)
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const barcode = barcodeInput.value.trim();
-        const productName = productNameInput.value;
-        const lot = document.getElementById('lot').value.trim();
-        const quantity = document.getElementById('quantity').value;
-        const expiryDate = document.getElementById('expiry-date').value;
-
-        if (productName === 'Aguardando Leitura...' || productName === 'Produto Não Encontrado' || productName === 'Falha na Rede/Servidor Desligado') {
-            alert('Por favor, bipar um código de barras válido primeiro.');
-            barcodeInput.focus();
-            return;
-        }
-
-        // Adiciona o item à lista de dados pendentes
-        const newItem = { 
-            codigo_barras: barcode, 
-            produto: productName, 
-            lote: lot, 
-            quantidade: quantity, 
-            validade: expiryDate 
-        };
-        pendingItemsData.push(newItem);
-
-        // Atualiza a visualização e o botão de exportar
-        renderPendingList();
-        
-        // 4. AUTOMAÇÃO: Limpa os campos e retorna o foco para o scanner (Fluxo de trabalho rápido)
-        document.getElementById('lot').value = '';
-        document.getElementById('quantity').value = '';
-        document.getElementById('expiry-date').value = '';
-        
-        productNameInput.value = 'Aguardando Leitura...';
-        barcodeInput.value = '';
-        barcodeInput.focus(); // Retorna o foco
-    });
-
     function renderPendingList() {
+        countSpan.textContent = pendingItemsData.length;
+        
         if (pendingItemsData.length === 0) {
-            pendingList.innerHTML = '<li>Nenhum item adicionado ainda.</li>';
+            // Estado vazio visualmente mais agradável
+            pendingList.innerHTML = `
+                <li style="flex-direction: column; align-items: center; justify-content: center; padding: 40px; color: var(--texto-cinza); border:none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="color: #dce4ec; margin-bottom: 10px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <span>Nenhum item bipado ainda.</span>
+                </li>`;
             exportBtn.disabled = true;
             return;
         }
 
-        // Adiciona um item por linha
-        pendingList.innerHTML = pendingItemsData.map(item => `
+        // Renderização dos itens com novo layout
+        pendingList.innerHTML = pendingItemsData.map((item, index) => `
             <li>
-                <span class="item-description">${item.produto} (Qtd: ${item.quantidade})</span>
-                <span class="data-val">${item.lote} | ${formatDateForDisplay(item.validade)}</span>
+                <div class="item-info">
+                    <span class="item-name">${item.produto}</span>
+                    <div class="item-details">
+                        <span class="detail-badge">Lote: <strong>${item.lote}</strong></span>
+                        <span class="detail-badge" style="border-left: 1px solid #eee; padding-left: 15px;">Val: <strong>${formatDateForDisplay(item.validade)}</strong></span>
+                        <span class="detail-badge" style="border-left: 1px solid #eee; padding-left: 15px; color: var(--azul-escuro);">Qtd: <strong>${item.quantidade}</strong></span>
+                    </div>
+                </div>
+                <button type="button" class="btn-icon-remove" onclick="removeItem(${index})" title="Remover Item">
+                    ✕
+                </button>
             </li>
         `).join('');
         
         exportBtn.disabled = false;
+        localStorage.setItem('sb_inventory_data', JSON.stringify(pendingItemsData));
     }
-    
+
     function formatDateForDisplay(dateString) {
         if (!dateString) return 'S/D';
         const [year, month, day] = dateString.split('-');
         return `${day}/${month}/${year}`;
     }
 
-    // 5. FUNCIONALIDADE: Exportar Dados para CSV (Excel)
-    exportBtn.addEventListener('click', () => {
-        if (pendingItemsData.length === 0) {
-            alert('Não há dados para exportar.');
+    window.removeItem = function(index) {
+        // Confirmação simplificada
+        if(confirm('Deseja realmente remover este item da lista?')) {
+            pendingItemsData.splice(index, 1);
+            renderPendingList();
+        }
+    };
+
+    // --- EVENTOS (Inalterados) ---
+    barcodeInput.addEventListener('change', async (e) => {
+        const code = e.target.value.trim();
+        if (code.length > 2) {
+            const name = await lookupProduct(code);
+            productNameInput.value = name;
+            if (name !== 'PRODUTO NÃO CADASTRADO') {
+                document.getElementById('lot').focus();
+            }
+        }
+    });
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const produto = productNameInput.value;
+        if (produto.includes('Aguardando') || produto.includes('NÃO CADASTRADO')) {
+            alert('Bipe um produto válido primeiro.');
+            barcodeInput.focus();
             return;
         }
+        const newItem = {
+            codigo_barras: barcodeInput.value,
+            produto: productNameInput.value,
+            lote: document.getElementById('lot').value.toUpperCase(),
+            quantidade: document.getElementById('quantity').value,
+            validade: document.getElementById('expiry-date').value
+        };
+        pendingItemsData.unshift(newItem); // Adiciona ao TOPO da lista agora
+        renderPendingList();
         
-        const headers = ['codigo_barras', 'produto', 'lote', 'quantidade', 'validade'];
-        let csv = headers.join(';') + '\n';
+        // Reset do form
+        document.getElementById('lot').value = '';
+        document.getElementById('quantity').value = '';
+        document.getElementById('expiry-date').value = '';
+        productNameInput.value = 'Aguardando Leitura...';
+        barcodeInput.value = '';
+        barcodeInput.focus();
+    });
 
+    exportBtn.addEventListener('click', () => {
+        if (pendingItemsData.length === 0) return;
+        const BOM = "\uFEFF"; 
+        const headers = ['CODIGO', 'PRODUTO', 'LOTE', 'QTD', 'VALIDADE'];
+        let csv = BOM + headers.join(';') + '\n';
         pendingItemsData.forEach(item => {
-            const formattedDate = formatDateForDisplay(item.validade);
-            
-            const values = [
-                item.codigo_barras, 
-                item.produto.replace(/;/g, ','), 
-                item.lote, 
-                item.quantidade, 
-                formattedDate 
-            ];
-            csv += values.join(';') + '\n';
+            csv += [
+                item.codigo_barras, item.produto, item.lote, item.quantidade, formatDateForDisplay(item.validade)
+            ].join(';') + '\n';
         });
-
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.setAttribute('download', `inventario_vencimento_SB_FARMA_${new Date().toISOString().slice(0, 10)}.csv`);
-        
+        const dataHoje = new Date().toISOString().slice(0,10);
+        link.setAttribute('download', `Inventario_SBFARMA_${dataHoje}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
-        alert(`Sucesso! ${pendingItemsData.length} itens exportados para CSV.`);
     });
 
-    // Inicializa a lista
+    clearBtn.addEventListener('click', () => {
+        if(confirm('ATENÇÃO: Isso apagará todos os itens da lista atual. Confirmar?')) {
+            pendingItemsData = [];
+            renderPendingList();
+            localStorage.removeItem('sb_inventory_data');
+            barcodeInput.focus();
+        }
+    });
+
+    // Inicialização
     renderPendingList();
+    barcodeInput.focus();
 </script>
 </body>
 </html>
