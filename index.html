@@ -273,7 +273,6 @@
         .detail-badge { display: inline-flex; align-items: center; gap: 5px; }
         .detail-badge strong { color: var(--azul-escuro); }
         
-        /* Nova etiqueta de loja na lista */
         .store-tag {
             font-size: 0.7em;
             text-transform: uppercase;
@@ -409,6 +408,11 @@
                         <input type="number" id="quantity" class="form-control" min="1" placeholder="Ex: 5" required>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="mfg-date">Data de Fabricação</label>
+                    <input type="date" id="mfg-date" class="form-control" required>
+                </div>
                 
                 <div class="form-group">
                     <label for="expiry-date">Validade</label>
@@ -438,12 +442,6 @@
 </div>
 
 <script>
-    // --- MOCK DB para teste local ---
-    const MOCK_DB = {
-        "789101010": "DIPIRONA SÓDICA 500MG",
-        "789202020": "PARACETAMOL 750MG"
-    };
-
     const ENDPOINT_BUSCA = '/api/produto?codigo='; 
     const barcodeInput = document.getElementById('barcode');
     const productNameInput = document.getElementById('product-name');
@@ -453,8 +451,16 @@
     const clearBtn = document.getElementById('clear-btn');
     const countSpan = document.getElementById('count-badge');
     const storeSelect = document.getElementById('store-select'); 
+    const lotInput = document.getElementById('lot');
 
     let pendingItemsData = JSON.parse(localStorage.getItem('sb_inventory_data')) || [];
+
+    // --- CONFIG: FORÇAR LOTE MAIÚSCULO E ALFANUMÉRICO ---
+    lotInput.addEventListener('input', function(e) {
+        // Converte para maiúsculo e remove tudo que NÃO for letra (A-Z) ou número (0-9)
+        let val = e.target.value.toUpperCase();
+        e.target.value = val.replace(/[^A-Z0-9]/g, '');
+    });
 
     // --- CARREGAR LOJA SALVA ---
     const savedStore = localStorage.getItem('sb_store_pref');
@@ -462,7 +468,6 @@
         storeSelect.value = savedStore;
     }
 
-    // Salvar loja ao mudar
     storeSelect.addEventListener('change', () => {
         localStorage.setItem('sb_store_pref', storeSelect.value);
     });
@@ -471,9 +476,6 @@
 
     async function lookupProduct(barcode) {
         productNameInput.value = 'Buscando...';
-        // Tenta Mock primeiro
-        if (MOCK_DB[barcode]) return MOCK_DB[barcode];
-
         try {
             const response = await fetch(ENDPOINT_BUSCA + barcode);
             if (response.ok) {
@@ -499,18 +501,18 @@
             return;
         }
 
-        // Renderização com a etiqueta da Loja
         pendingList.innerHTML = pendingItemsData.map((item, index) => `
             <li>
                 <div class="item-info">
                     <div style="margin-bottom: 4px;">
-                        <span class="store-tag">${item.loja || 'LOJA'}</span>
+                        <span class="store-tag">${item.loja}</span>
                         <span class="item-name">${item.produto}</span>
                     </div>
                     <div class="item-details">
                         <span class="detail-badge">Lote: <strong>${item.lote}</strong></span>
-                        <span class="detail-badge" style="border-left: 1px solid #eee; padding-left: 15px;">Val: <strong>${formatDateForDisplay(item.validade)}</strong></span>
-                        <span class="detail-badge" style="border-left: 1px solid #eee; padding-left: 15px; color: var(--azul-escuro);">Qtd: <strong>${item.quantidade}</strong></span>
+                        <span class="detail-badge" style="border-left: 1px solid #eee; padding-left: 10px;">Fab: <strong>${formatDateForDisplay(item.fabricacao)}</strong></span>
+                        <span class="detail-badge" style="border-left: 1px solid #eee; padding-left: 10px;">Val: <strong>${formatDateForDisplay(item.validade)}</strong></span>
+                        <span class="detail-badge" style="border-left: 1px solid #eee; padding-left: 10px; color: var(--azul-escuro);">Qtd: <strong>${item.quantidade}</strong></span>
                     </div>
                 </div>
                 <button type="button" class="btn-icon-remove" onclick="removeItem(${index})" title="Remover Item">
@@ -568,16 +570,19 @@
             loja: storeSelect.value,
             codigo_barras: barcodeInput.value,
             produto: productNameInput.value,
-            lote: document.getElementById('lot').value.toUpperCase(),
+            lote: document.getElementById('lot').value, // Já validado pelo evento input
             quantidade: document.getElementById('quantity').value,
+            fabricacao: document.getElementById('mfg-date').value, // Novo campo
             validade: document.getElementById('expiry-date').value
         };
 
         pendingItemsData.unshift(newItem); 
         renderPendingList();
         
+        // Reset dos campos
         document.getElementById('lot').value = '';
         document.getElementById('quantity').value = '';
+        document.getElementById('mfg-date').value = '';
         document.getElementById('expiry-date').value = '';
         productNameInput.value = 'Aguardando Leitura...';
         barcodeInput.value = '';
@@ -587,17 +592,20 @@
     exportBtn.addEventListener('click', () => {
         if (pendingItemsData.length === 0) return;
         const BOM = "\uFEFF"; 
-        const headers = ['LOJA', 'CODIGO', 'PRODUTO', 'LOTE', 'QTD', 'VALIDADE'];
-        let csv = BOM + headers.join(';') + '\n';
+        
+        // --- FORMATO EXATO DA PLANILHA "TESTE.CSV" ---
+        // Sem cabeçalho
+        // Colunas: Loja ; Codigo ; Lote ; Qtd ; Fabricacao ; Validade
+        let csv = BOM;
         
         pendingItemsData.forEach(item => {
             csv += [
                 item.loja,
                 item.codigo_barras, 
-                item.produto, 
                 item.lote, 
                 item.quantidade, 
-                formatDateForDisplay(item.validade)
+                formatDateForDisplay(item.fabricacao), // DD/MM/AAAA
+                formatDateForDisplay(item.validade)    // DD/MM/AAAA
             ].join(';') + '\n';
         });
 
