@@ -2,193 +2,334 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventário de Validade - SB FARMA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SBFarma | Controle de Estoque</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* --- VARIÁVEIS DE CSS --- */
         :root {
-            --azul-escuro: #003366;
-            --azul-claro-fundo: #f0f4f8;
-            --branco: #ffffff;
-            --texto-escuro: #2c3e50;
-            --texto-cinza: #546e7a;
-            --verde-sucesso: #27ae60;
-            --amarelo-alerta: #f39c12;
-            --vermelho-erro: #c0392b;
-            --borda-suave: #dce4ec;
+            --primary: #003366; /* Azul Institucional */
+            --primary-hover: #002244;
+            --surface: #ffffff;
+            --background: #f3f4f6;
+            --text-main: #111827;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --radius: 8px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
         }
+
+        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
-            background-color: var(--azul-claro-fundo);
-            color: var(--texto-escuro);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand img { height: 40px; width: auto; }
+        
+        .brand-text h1 { font-size: 1.125rem; font-weight: 600; margin: 0; }
+        .brand-text p { font-size: 0.8rem; margin: 0; opacity: 0.8; }
+
+        /* MAIN CONTENT */
+        main {
+            flex: 1; /* Ocupa o espaço disponível para empurrar o footer */
+            width: 100%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            main { grid-template-columns: 400px 1fr; align-items: start; }
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            background-color: #f9fafb;
+        }
+
+        .card-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
             margin: 0;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: var(--azul-escuro);
-            color: var(--branco);
-            padding: 15px 20px;
-            display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            gap: 0.5rem;
         }
 
-        .header-content {
+        .card-body { padding: 1.5rem; }
+
+        /* FORMS */
+        .form-group { margin-bottom: 1.25rem; }
+        
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        input, select {
             width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 20px;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: #fff;
         }
 
-        .logo-container img { max-height: 55px; width: auto; display: block; }
-        .header-title h1 { margin: 0; font-size: 1.4em; font-weight: 600; letter-spacing: 0.5px; }
-        .header-title p { margin: 2px 0 0 0; font-size: 0.9em; opacity: 0.8; font-weight: 300; }
-
-        .main-container {
-            flex: 1;
-            width: 100%;
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-            box-sizing: border-box;
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
         }
 
-        @media (min-width: 900px) {
-            .main-container {
-                grid-template-columns: 400px 1fr;
-                align-items: start;
-            }
+        /* Readonly Field */
+        input[readonly] {
+            background-color: #f3f4f6;
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            border-color: #e5e7eb;
         }
 
-        .card {
-            background-color: var(--branco);
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid var(--borda-suave);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+        /* Grid for Inputs */
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        /* Barcode Input Highlight */
+        #barcode {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-align: center;
+            border-color: #93c5fd;
+            background-color: #eff6ff;
         }
-        
-        .card-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--borda-suave);
-            background-color: #fafbfc;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .card-header h3 { margin: 0; color: var(--azul-escuro); font-size: 1.1em; font-weight: 700; }
-        
-        .card-body { padding: 25px; flex: 1; }
+        #barcode:focus { border-color: var(--primary); background-color: #fff; }
 
-        /* --- FORMULÁRIO --- */
-        .barcode-wrapper { margin-bottom: 25px; position: relative; }
-        .barcode-field input {
-            width: 100%; padding: 18px; font-size: 1.3em; text-align: center;
-            border: 3px solid var(--azul-escuro); border-radius: 6px; box-sizing: border-box;
-            font-weight: 700; color: var(--azul-escuro); background-color: #f8fbff;
-            transition: all 0.3s ease;
-        }
-        .barcode-field input:focus { outline: none; background-color: var(--branco); box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.15); }
-        .barcode-label { text-align: center; display: block; margin-top: 8px; font-size: 0.85em; color: var(--texto-cinza); font-weight: 600; }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9em; color: var(--texto-escuro); }
-        
-        .form-control {
-            width: 100%; padding: 12px 15px; border: 1px solid var(--borda-suave);
-            border-radius: 6px; box-sizing: border-box; font-size: 1em;
-            color: var(--texto-escuro); transition: border-color 0.3s; background-color: #fcfdfe;
-        }
-        .form-control:focus { border-color: var(--azul-escuro); outline: none; background-color: var(--branco); }
-        .form-control[readonly] { background-color: #e9ecef; color: var(--texto-cinza); font-weight: 600; border-color: #dce4ec; cursor: not-allowed; }
-
-        #store-select { border: 2px solid var(--verde-sucesso); background-color: #f0fff4; color: #003366; font-weight: bold; height: 50px; }
-
-        .form-row { display: flex; gap: 15px; }
-        .form-row .form-group { flex: 1; }
-
-        /* --- SEARCH BAR --- */
-        .search-wrapper { padding: 15px 20px; background-color: #f8fbff; border-bottom: 1px solid var(--borda-suave); }
-        #search-input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9em; }
-
-        /* --- BOTÕES --- */
+        /* BUTTONS */
         .btn {
-            width: 100%; padding: 14px; border: none; border-radius: 6px;
-            font-size: 1em; font-weight: 700; cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            text-transform: uppercase; letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.875rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            gap: 0.5rem;
         }
-        .btn:active { transform: translateY(1px); }
-        .btn-primary { background-color: var(--azul-escuro); color: var(--branco); }
-        .btn-success { background-color: var(--verde-sucesso); color: var(--branco); margin-top: 10px; }
-        .btn-outline-danger { background-color: transparent; border: 2px solid var(--vermelho-erro); color: var(--vermelho-erro); margin-top: 15px; padding: 10px; font-size: 0.9em; }
 
-        /* --- LISTA --- */
-        .list-container { height: 100%; }
-        .item-list { list-style: none; padding: 0; margin: 0; max-height: 500px; overflow-y: auto; }
-        .item-list li {
-            background-color: var(--branco); border-bottom: 1px solid var(--borda-suave);
-            padding: 15px; display: flex; justify-content: space-between; align-items: center;
-            transition: background-color 0.2s; position: relative;
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-hover); }
+        .btn-primary:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
+        .btn-outline-danger {
+            background-color: transparent;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            margin-top: 1rem;
+            font-size: 0.875rem;
         }
-        .item-list li:hover { background-color: #f8fbff; }
-        .item-info { display: flex; flex-direction: column; flex: 1; }
-        .item-name { font-weight: 700; color: var(--texto-escuro); font-size: 1.05em; }
+        .btn-outline-danger:hover { background-color: #fef2f2; }
+
+        /* LIST & SEARCH */
+        .search-box {
+            position: relative;
+            margin-bottom: 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .search-box input {
+            border: none;
+            border-radius: 0;
+            padding: 1rem 1.25rem 1rem 2.5rem;
+            background: transparent;
+        }
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.1s;
+        }
+        .list-item:hover { background-color: #f9fafb; }
+        .list-item:last-child { border-bottom: none; }
+
+        .item-content h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .meta-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* ACTIONS */
+        .actions { display: flex; gap: 0.5rem; }
         
-        .item-details { font-size: 0.85em; color: var(--texto-cinza); margin-top: 5px; display: flex; flex-wrap: wrap; gap: 10px; }
-        .detail-badge { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
-        .detail-badge strong { color: var(--azul-escuro); }
-        .store-tag { font-size: 0.7em; text-transform: uppercase; background-color: var(--azul-escuro); color: white; padding: 2px 6px; border-radius: 4px; margin-right: 8px; vertical-align: middle; }
-
-        .item-actions { display: flex; gap: 8px; }
-        .btn-icon {
-            width: 36px; height: 36px; border-radius: 6px; background-color: transparent;
-            border: 1px solid var(--borda-suave); cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s; font-size: 1.2em;
+        .icon-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            color: var(--text-secondary);
+            transition: all 0.2s;
         }
-        .btn-edit { color: var(--azul-escuro); border-color: var(--azul-escuro); }
-        .btn-edit:hover { background-color: var(--azul-escuro); color: white; }
-        .btn-remove { color: var(--vermelho-erro); border-color: var(--borda-suave); }
-        .btn-remove:hover { background-color: var(--vermelho-erro); color: white; border-color: var(--vermelho-erro); }
+        .icon-btn:hover { background-color: #e5e7eb; color: var(--text-main); }
+        .icon-btn.delete:hover { background-color: #fee2e2; color: var(--danger); }
 
-        #count-badge { background-color: var(--azul-escuro); color: var(--branco); padding: 3px 10px; border-radius: 12px; font-size: 0.8em; }
-        .list-footer { padding: 20px 25px; background-color: #fafbfc; border-top: 1px solid var(--borda-suave); }
+        /* SVG ICONS */
+        .icon { width: 18px; height: 18px; stroke-width: 2; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* FOOTER DISCRETO */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: auto;
+            border-top: 1px solid #e5e7eb;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            background-color: #f9fafb;
+        }
+        footer p { margin: 0.25rem 0; }
+        
+        /* Alterado para herdar a cor (ficar cinza igual ao resto) */
+        footer strong { color: inherit; font-weight: 600; }
+
+        /* TOAST */
+        #toast-container {
+            position: fixed; top: 1rem; right: 1rem; z-index: 50;
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .toast {
+            background: white;
+            padding: 1rem;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+        }
+        .toast.error { border-left-color: var(--danger); }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
     </style>
 </head>
 <body>
 
+<div id="toast-container"></div>
+
 <header>
-    <div class="header-content">
-        <div class="logo-container"><img src="SB_farma_oficial_branco-01.png" alt="SB Farma Logo"></div>
-        <div class="header-title">
-            <h1>Inventário de Validade</h1>
-            <p>Sistema de Coleta Rápida</p>
+    <div class="header-container">
+        <div class="brand">
+            <img src="SB_farma_oficial_branco-01.png" alt="SB Farma">
+            <div class="brand-text">
+                <h1>SBFarma</h1>
+                <p>Controle de Validade</p>
+            </div>
         </div>
     </div>
 </header>
 
-<div class="main-container">
+<main>
     <div class="card">
-        <div class="card-header"><h3>Registro de Item</h3></div>
+        <div class="card-header">
+            <h2>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                Registro de Item
+            </h2>
+        </div>
         <div class="card-body">
-            <form id="validity-form">
+            <form id="inventory-form">
+                
                 <div class="form-group">
-                    <label style="color: var(--verde-sucesso);">📍 Selecione a Loja / Filial</label>
-                    <select id="store-select" class="form-control" required>
-                        <option value="">-- CLIQUE PARA SELECIONAR --</option>
+                    <label>Loja / Filial</label>
+                    <select id="store" required>
+                        <option value="" disabled selected>Selecione a unidade...</option>
                         <option value="LOJA 01 - POUPE FARMA APUAIRES">LOJA 01 - POUPE FARMA APUAIRES</option>
                         <option value="LOJA 02 - ULTRA POPULAR TRAIRI">LOJA 02 - ULTRA POPULAR TRAIRI</option>
                         <option value="LOJA 03 - GOTA MAIS MARACANAU">LOJA 03 - GOTA MAIS MARACANAU</option>
@@ -229,302 +370,303 @@
                         <option value="LOJA 46 - ULTRA POPULAR ACARAU">LOJA 46 - ULTRA POPULAR ACARAU</option>
                     </select>
                 </div>
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-                
-                <div class="barcode-wrapper">
-                    <div class="barcode-field">
-                        <input type="text" id="barcode" placeholder="" inputmode="numeric" pattern="[0-9]*" autofocus autocomplete="off">
-                    </div>
-                    <label class="barcode-label">BIPAR CÓDIGO DE BARRAS AQUI</label>
-                </div>
-                
+
                 <div class="form-group">
-                    <label for="product-name">Produto Identificado</label>
-                    <input type="text" id="product-name" class="form-control" value="Aguardando Leitura..." readonly>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="lot">Lote</label>
-                        <input type="text" id="lot" class="form-control" placeholder="Ex: 24B01A" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="quantity">Qtd.</label>
-                        <input type="number" id="quantity" class="form-control" min="1" placeholder="Ex: 5" required>
-                    </div>
+                    <label>Código de Barras</label>
+                    <input type="text" id="barcode" placeholder="Bipe aqui..." inputmode="numeric" pattern="[0-9]*" autocomplete="off">
                 </div>
 
                 <div class="form-group">
-                    <label for="mfg-date">Data de Fabricação</label>
-                    <input type="date" id="mfg-date" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="expiry-date">Validade</label>
-                    <input type="date" id="expiry-date" class="form-control" required>
+                    <label>Produto Identificado</label>
+                    <input type="text" id="product" placeholder="Aguardando leitura..." readonly>
                 </div>
 
-                <button type="submit" class="btn btn-success" id="submit-btn">ADICIONAR ITEM</button>
+                <div class="row">
+                    <div class="form-group">
+                        <label>Lote</label>
+                        <input type="text" id="lot" placeholder="Ex: A123" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantidade</label>
+                        <input type="number" id="qty" placeholder="Ex: 5" min="1" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Fabricação (Mês/Ano)</label>
+                        <input type="text" id="mfg" placeholder="MM/AAAA" maxlength="7" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Validade (Mês/Ano)</label>
+                        <input type="text" id="exp" placeholder="MM/AAAA" maxlength="7" required>
+                    </div>
+                </div>
+
+                <button type="submit" id="submit-btn" class="btn btn-primary">
+                    <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Adicionar à Lista
+                </button>
+
             </form>
         </div>
     </div>
-    
-    <div class="card list-container">
-        <div class="card-header"><h3>Itens na Sessão <span id="count-badge">0</span></h3></div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                Itens Coletados (<span id="count">0</span>)
+            </h2>
+        </div>
         
-        <div class="search-wrapper">
-            <input type="text" id="search-input" placeholder="🔍 Pesquisar por Nome, Lote ou Código...">
+        <div class="search-box">
+            <svg class="icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="search" placeholder="Buscar por lote, nome ou código...">
         </div>
 
-        <div style="flex: 1; overflow: hidden; display: flex; flex-direction: column;">
-            <ul id="pending-list" class="item-list"></ul>
-        </div>
+        <ul id="list" class="item-list">
+            </ul>
 
-        <div class="list-footer">
-            <button id="export-btn" class="btn btn-primary" disabled>BAIXAR PLANILHA EXCEL (CSV)</button>
-            <button id="clear-btn" class="btn btn-outline-danger">Limpar Lista</button>
+        <div class="card-body">
+            <button id="export-btn" class="btn btn-primary" disabled>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Baixar Planilha CSV
+            </button>
+            <button id="clear-btn" class="btn btn-outline-danger">
+                Limpar Lista Completa
+            </button>
         </div>
     </div>
-</div>
+</main>
+
+<footer>
+    <p>&copy; 2025 SB Farma. Todos os direitos reservados.</p>
+    <p>Desenvolvido por <strong>Eduardo Dourado</strong></p>
+</footer>
 
 <script>
-    const ENDPOINT_BUSCA = '/api/produto?codigo='; 
-    const barcodeInput = document.getElementById('barcode');
-    const productNameInput = document.getElementById('product-name');
-    const lotInput = document.getElementById('lot');
-    const searchInput = document.getElementById('search-input');
-    const form = document.getElementById('validity-form');
-    const submitBtn = document.getElementById('submit-btn');
+    /* --- ELEMENTOS --- */
+    const el = {
+        store: document.getElementById('store'),
+        barcode: document.getElementById('barcode'),
+        product: document.getElementById('product'),
+        lot: document.getElementById('lot'),
+        qty: document.getElementById('qty'),
+        mfg: document.getElementById('mfg'),
+        exp: document.getElementById('exp'),
+        form: document.getElementById('inventory-form'),
+        list: document.getElementById('list'),
+        search: document.getElementById('search'),
+        count: document.getElementById('count'),
+        exportBtn: document.getElementById('export-btn'),
+        clearBtn: document.getElementById('clear-btn'),
+        submitBtn: document.getElementById('submit-btn'),
+        toastBox: document.getElementById('toast-container')
+    };
+
+    /* --- ESTADO --- */
+    const API_URL = '/api/produto?codigo=';
+    let items = JSON.parse(localStorage.getItem('sb_inventory')) || [];
+    let savedStore = localStorage.getItem('sb_store');
     
-    const pendingList = document.getElementById('pending-list');
-    const exportBtn = document.getElementById('export-btn');
-    const countSpan = document.getElementById('count-badge');
-    const storeSelect = document.getElementById('store-select'); 
+    if (savedStore) el.store.value = savedStore;
 
-    // Dados em memória
-    let pendingItemsData = JSON.parse(localStorage.getItem('sb_inventory_data')) || [];
-
-    // Carregar loja salva
-    const savedStore = localStorage.getItem('sb_store_pref');
-    if (savedStore) storeSelect.value = savedStore;
-    storeSelect.addEventListener('change', () => localStorage.setItem('sb_store_pref', storeSelect.value));
-
-    // --- REGRAS DE INPUT ---
-    // Lote: Maiúsculo e Alfanumérico
-    lotInput.addEventListener('input', function(e) {
-        let val = e.target.value.toUpperCase();
-        e.target.value = val.replace(/[^A-Z0-9]/g, '');
-    });
-
-    // --- FUNÇÕES ---
-    async function lookupProduct(barcode) {
-        productNameInput.value = 'Buscando...';
-        try {
-            const response = await fetch(ENDPOINT_BUSCA + barcode);
-            if (response.ok) {
-                const data = await response.json();
-                return data.nome;
-            } else if (response.status === 404) {
-                 return 'PRODUTO NÃO CADASTRADO';
-            } else {
-                 return 'ERRO DE SISTEMA';
-            }
-        } catch (e) { console.log("API offline."); return 'ERRO DE REDE'; }
+    /* --- HELPERS --- */
+    function showToast(msg, type = 'success') {
+        const div = document.createElement('div');
+        div.className = `toast ${type}`;
+        div.innerText = msg;
+        el.toastBox.appendChild(div);
+        setTimeout(() => { div.remove(); }, 3000);
     }
 
-    function renderPendingList() {
-        const searchTerm = searchInput.value.toLowerCase();
-        
-        // Filtra os itens baseado na pesquisa
-        const filteredItems = pendingItemsData.filter(item => {
-            return item.produto.toLowerCase().includes(searchTerm) || 
-                   item.lote.toLowerCase().includes(searchTerm) || 
-                   item.codigo_barras.includes(searchTerm);
-        });
+    // Máscara de Data (MM/AAAA)
+    function maskDate(input) {
+        let val = input.value.replace(/\D/g, ''); // Remove tudo que não é número
+        if (val.length > 2) val = val.substring(0, 2) + '/' + val.substring(2, 6);
+        input.value = val;
+    }
 
-        countSpan.textContent = pendingItemsData.length; // Conta total sempre
-        
-        if (filteredItems.length === 0) {
-            pendingList.innerHTML = `
-                <li style="flex-direction: column; align-items: center; padding: 40px; color: var(--texto-cinza);">
-                    <span>${pendingItemsData.length === 0 ? 'Nenhum item bipado.' : 'Nenhum item encontrado na busca.'}</span>
-                </li>`;
-            exportBtn.disabled = pendingItemsData.length === 0;
+    // Formata data para CSV (Adiciona dia 28)
+    function formatDateCSV(monthYear) {
+        if (!monthYear || monthYear.length < 7) return '';
+        return `28/${monthYear}`;
+    }
+
+    /* --- EVENTOS --- */
+    
+    // Salvar Loja
+    el.store.addEventListener('change', () => localStorage.setItem('sb_store', el.store.value));
+
+    // Lote: Maiúsculo
+    el.lot.addEventListener('input', e => {
+        e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    });
+
+    // Máscaras de Data
+    el.mfg.addEventListener('input', e => maskDate(e.target));
+    el.exp.addEventListener('input', e => maskDate(e.target));
+
+    // Buscar Produto
+    el.barcode.addEventListener('change', async () => {
+        const code = el.barcode.value.trim();
+        if (code.length < 3) return;
+
+        el.product.value = 'Buscando...';
+        try {
+            const res = await fetch(API_URL + code);
+            if (res.ok) {
+                const data = await res.json();
+                el.product.value = data.nome;
+                el.lot.focus();
+            } else {
+                el.product.value = 'PRODUTO NÃO CADASTRADO';
+                showToast('Produto não encontrado', 'error');
+            }
+        } catch {
+            el.product.value = 'ERRO DE CONEXÃO';
+        }
+    });
+
+    // Renderizar Lista
+    function render() {
+        const term = el.search.value.toLowerCase();
+        const filtered = items.filter(i => 
+            i.produto.toLowerCase().includes(term) || 
+            i.lote.toLowerCase().includes(term) || 
+            i.barcode.includes(term)
+        );
+
+        el.count.innerText = items.length;
+        el.exportBtn.disabled = items.length === 0;
+
+        if (filtered.length === 0) {
+            el.list.innerHTML = `<li style="padding:2rem; text-align:center; color:#9ca3af;">Nenhum item encontrado.</li>`;
             return;
         }
 
-        pendingList.innerHTML = filteredItems.map((item) => `
-            <li>
-                <div class="item-info">
-                    <div style="margin-bottom: 4px;">
-                        <span class="store-tag">${item.loja}</span>
-                        <span class="item-name">${item.produto}</span>
-                    </div>
-                    <div class="item-details">
-                        <span class="detail-badge">Lote: <strong>${item.lote}</strong></span>
-                        <span class="detail-badge">Fab: <strong>${formatDateForDisplay(item.fabricacao)}</strong></span>
-                        <span class="detail-badge">Val: <strong>${formatDateForDisplay(item.validade)}</strong></span>
-                        <span class="detail-badge">Qtd: <strong>${item.quantidade}</strong></span>
+        el.list.innerHTML = filtered.map(i => `
+            <li class="list-item">
+                <div class="item-content">
+                    <h4>${i.produto}</h4>
+                    <div class="meta-info">
+                        <span class="meta-tag">🏭 Lote: ${i.lote}</span>
+                        <span class="meta-tag">📅 Val: ${i.exp}</span>
+                        <span class="meta-tag">📦 Qtd: ${i.qty}</span>
                     </div>
                 </div>
-                <div class="item-actions">
-                    <button type="button" class="btn-icon btn-edit" onclick="editItem(${item.id})" title="Editar">✎</button>
-                    <button type="button" class="btn-icon btn-remove" onclick="removeItem(${item.id})" title="Remover">✕</button>
+                <div class="actions">
+                    <button class="icon-btn" onclick="editItem(${i.id})">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </button>
+                    <button class="icon-btn delete" onclick="deleteItem(${i.id})">
+                        <svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
                 </div>
             </li>
         `).join('');
         
-        exportBtn.disabled = false;
-        localStorage.setItem('sb_inventory_data', JSON.stringify(pendingItemsData));
+        localStorage.setItem('sb_inventory', JSON.stringify(items));
     }
 
-    function formatDateForDisplay(dateString) {
-        if (!dateString) return 'S/D';
-        const [year, month, day] = dateString.split('-');
-        return `${day}/${month}/${year}`;
-    }
-
-    // --- AÇÕES CRUD ---
-
-    // Remover
-    window.removeItem = function(id) {
-        if(confirm('Deseja realmente remover este item?')) {
-            pendingItemsData = pendingItemsData.filter(item => item.id !== id);
-            renderPendingList();
-        }
-    };
-
-    // Editar
-    window.editItem = function(id) {
-        const item = pendingItemsData.find(i => i.id === id);
-        if (!item) return;
-
-        // Joga os dados de volta no formulário
-        storeSelect.value = item.loja;
-        barcodeInput.value = item.codigo_barras;
-        productNameInput.value = item.produto;
-        lotInput.value = item.lote;
-        document.getElementById('quantity').value = item.quantidade;
-        document.getElementById('mfg-date').value = item.fabricacao;
-        document.getElementById('expiry-date').value = item.validade;
-
-        // Remove da lista para "atualizar" ao salvar
-        pendingItemsData = pendingItemsData.filter(i => i.id !== id);
-        renderPendingList();
-        
-        // Foca no lote para facilitar edição
-        lotInput.focus();
-        submitBtn.innerText = "SALVAR ALTERAÇÃO"; // Muda texto do botão
-    };
-
-    // Pesquisa em tempo real
-    searchInput.addEventListener('input', renderPendingList);
-
-    // --- FLUXO PRINCIPAL ---
-
-    barcodeInput.addEventListener('change', async (e) => {
-        const code = e.target.value.trim();
-        if (code.length > 2) {
-            const name = await lookupProduct(code);
-            productNameInput.value = name;
-            if (name !== 'PRODUTO NÃO CADASTRADO' && !name.includes('ERRO')) {
-                document.getElementById('lot').focus();
-            }
-        }
-    });
-
-    form.addEventListener('submit', (e) => {
+    // CRUD
+    el.form.addEventListener('submit', e => {
         e.preventDefault();
+        
+        if (!el.store.value) return showToast('Selecione a loja!', 'error');
+        if (el.product.value.includes('NÃO') || el.product.value.includes('ERRO')) return showToast('Produto inválido.', 'error');
+        if (el.mfg.value.length < 7 || el.exp.value.length < 7) return showToast('Preencha as datas corretamente (MM/AAAA)', 'error');
 
-        if (!storeSelect.value) {
-            alert('⚠️ Selecione a Loja.');
-            storeSelect.focus();
-            return;
-        }
-
-        const produto = productNameInput.value;
-        const loteDigitado = lotInput.value.toUpperCase();
-        const codigoDigitado = barcodeInput.value;
-
-        if (produto.includes('Aguardando') || produto.includes('NÃO CADASTRADO') || produto.includes('ERRO')) {
-            alert('Bipe um produto válido primeiro.');
-            barcodeInput.focus();
-            return;
-        }
-
-        // --- TRAVA DE DUPLICIDADE ---
-        // Verifica se já existe esse código com esse lote na lista
-        const existeDuplicado = pendingItemsData.some(item => 
-            item.codigo_barras === codigoDigitado && item.lote === loteDigitado
-        );
-
-        if (existeDuplicado) {
-            alert(`⛔ ATENÇÃO: O lote ${loteDigitado} já foi cadastrado para este produto nesta lista!\n\nSe precisar corrigir, use a busca e clique no lápis para editar.`);
-            return; // Para tudo e não salva
-        }
+        // Duplicidade Check
+        const exists = items.some(i => i.barcode === el.barcode.value && i.lote === el.lot.value);
+        if (exists) return showToast('Lote já cadastrado para este produto!', 'error');
 
         const newItem = {
-            id: Date.now(), // ID único para CRUD
-            loja: storeSelect.value,
-            codigo_barras: codigoDigitado,
-            produto: produto,
-            lote: loteDigitado,
-            quantidade: document.getElementById('quantity').value,
-            fabricacao: document.getElementById('mfg-date').value,
-            validade: document.getElementById('expiry-date').value
+            id: Date.now(),
+            store: el.store.value,
+            barcode: el.barcode.value,
+            produto: el.product.value,
+            lote: el.lot.value,
+            qty: el.qty.value,
+            mfg: el.mfg.value,
+            exp: el.exp.value
         };
 
-        pendingItemsData.unshift(newItem); 
-        renderPendingList();
+        items.unshift(newItem);
+        render();
         
-        // Reset e Foco
-        lotInput.value = '';
-        document.getElementById('quantity').value = '';
-        document.getElementById('mfg-date').value = '';
-        document.getElementById('expiry-date').value = '';
-        productNameInput.value = 'Aguardando Leitura...';
-        barcodeInput.value = '';
-        submitBtn.innerText = "ADICIONAR ITEM"; // Reseta texto do botão se estava editando
-        barcodeInput.focus();
+        // Reset Inputs
+        el.lot.value = ''; el.qty.value = ''; el.mfg.value = ''; el.exp.value = '';
+        el.product.value = ''; el.barcode.value = '';
+        el.submitBtn.innerHTML = `
+            <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Adicionar à Lista
+        `;
+        el.barcode.focus();
+        showToast('Item adicionado!', 'success');
     });
 
-    exportBtn.addEventListener('click', () => {
-        if (pendingItemsData.length === 0) return;
-        const BOM = "\uFEFF"; 
-        let csv = BOM; // Sem cabeçalho conforme seu pedido
+    window.deleteItem = id => {
+        if(confirm('Excluir item?')) {
+            items = items.filter(i => i.id !== id);
+            render();
+        }
+    };
+
+    window.editItem = id => {
+        const i = items.find(x => x.id === id);
+        if(!i) return;
+
+        el.store.value = i.store;
+        el.barcode.value = i.barcode;
+        el.product.value = i.produto;
+        el.lot.value = i.lote;
+        el.qty.value = i.qty;
+        el.mfg.value = i.mfg;
+        el.exp.value = i.exp;
+
+        items = items.filter(x => x.id !== id);
+        render();
+        el.submitBtn.innerText = '💾 Salvar Alteração';
+        el.lot.focus();
+    };
+
+    // Exportar CSV
+    el.exportBtn.addEventListener('click', () => {
+        const BOM = "\uFEFF";
+        let csv = BOM; // Sem cabeçalho conforme solicitado
         
-        pendingItemsData.forEach(item => {
+        items.forEach(i => {
             csv += [
-                item.loja,
-                item.codigo_barras, 
-                item.lote, 
-                item.quantidade, 
-                formatDateForDisplay(item.fabricacao),
-                formatDateForDisplay(item.validade)
+                i.store,
+                i.barcode,
+                i.lote,
+                i.qty,
+                formatDateCSV(i.mfg), // Adiciona o dia 28
+                formatDateCSV(i.exp)  // Adiciona o dia 28
             ].join(';') + '\n';
         });
 
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        const dataHoje = new Date().toISOString().slice(0,10);
-        link.setAttribute('download', `Inventario_SBFARMA_${dataHoje}.csv`);
+        const date = new Date().toISOString().slice(0,10);
+        link.download = `Inventario_SBFARMA_${date}.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     });
 
-    clearBtn.addEventListener('click', () => {
-        if(confirm('ATENÇÃO: Apagar a lista toda?')) {
-            pendingItemsData = [];
-            renderPendingList();
-            localStorage.removeItem('sb_inventory_data');
-            barcodeInput.focus();
+    el.clearBtn.addEventListener('click', () => {
+        if(confirm('Apagar TUDO?')) {
+            items = []; render(); localStorage.removeItem('sb_inventory');
         }
     });
 
-    renderPendingList();
-    if(savedStore) barcodeInput.focus();
+    el.search.addEventListener('input', render);
+    render();
+
 </script>
 </body>
 </html>
