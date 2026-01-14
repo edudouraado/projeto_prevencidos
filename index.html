@@ -64,7 +64,7 @@
 
         /* MAIN CONTENT */
         main {
-            flex: 1;
+            flex: 1; /* Ocupa o espaço disponível para empurrar o footer */
             width: 100%;
             max-width: 1000px;
             margin: 2rem auto;
@@ -275,6 +275,8 @@
             background-color: #f9fafb;
         }
         footer p { margin: 0.25rem 0; }
+        
+        /* Alterado para herdar a cor (ficar cinza igual ao resto) */
         footer strong { color: inherit; font-weight: 600; }
 
         /* TOAST */
@@ -633,20 +635,19 @@
     // Exportar CSV
     el.exportBtn.addEventListener('click', () => {
         const BOM = "\uFEFF";
-        let csv = BOM; 
+        let csv = BOM; // Sem cabeçalho conforme solicitado
         
         items.forEach(i => {
-            // Extrai APENAS O NÚMERO da loja (ex: "LOJA 10..." -> "10")
-            let storeNumber = i.store.match(/\d+/);
-            storeNumber = storeNumber ? storeNumber[0] : ""; 
+            // Extrai apenas os números do nome da loja
+            const storeNumber = i.store.match(/\d+/) ? i.store.match(/\d+/)[0] : i.store;
 
             csv += [
-                storeNumber, 
+                storeNumber, // Usa o número da loja
                 i.barcode,
                 i.lote,
                 i.qty,
-                formatDateCSV(i.mfg), 
-                formatDateCSV(i.exp) 
+                formatDateCSV(i.mfg), // Adiciona o dia 28
+                formatDateCSV(i.exp)  // Adiciona o dia 28
             ].join(';') + '\n';
         });
 
