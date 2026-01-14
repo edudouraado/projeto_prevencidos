@@ -264,7 +264,7 @@
         /* SVG ICONS */
         .icon { width: 18px; height: 18px; stroke-width: 2; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* FOOTER */
+        /* FOOTER DISCRETO */
         footer {
             text-align: center;
             padding: 2rem 0;
@@ -275,6 +275,8 @@
             background-color: #f9fafb;
         }
         footer p { margin: 0.25rem 0; }
+        
+        /* Alterado para herdar a cor (ficar cinza igual ao resto) */
         footer strong { color: inherit; font-weight: 600; }
 
         /* TOAST */
@@ -633,16 +635,16 @@
     // Exportar CSV
     el.exportBtn.addEventListener('click', () => {
         const BOM = "\uFEFF";
-        let csv = BOM; 
+        let csv = BOM; // Sem cabeçalho conforme solicitado
         
         items.forEach(i => {
             csv += [
-                i.store,
+                i.store, // REVERTIDO: Agora usa o nome completo da loja
                 i.barcode,
                 i.lote,
                 i.qty,
-                formatDateCSV(i.mfg), 
-                formatDateCSV(i.exp) 
+                formatDateCSV(i.mfg), // Adiciona o dia 28
+                formatDateCSV(i.exp)  // Adiciona o dia 28
             ].join(';') + '\n';
         });
 
