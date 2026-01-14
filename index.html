@@ -339,7 +339,7 @@
                         <option value="LOJA 07 - ULTRA POPULAR ITAPIPOCA">LOJA 07 - ULTRA POPULAR ITAPIPOCA</option>
                         <option value="LOJA 08 - ULTRA POPULAR PARAIPABA">LOJA 08 - ULTRA POPULAR PARAIPABA</option>
                         <option value="LOJA 09 - ULTRA POPULAR PARACURU">LOJA 09 - ULTRA POPULAR PARACURU</option>
-                        <option value="10">10</option>
+                        <option value="LOJA 10 - ULTRA POPULAR MONTESE">LOJA 10 - ULTRA POPULAR MONTESE</option>
                         <option value="LOJA 11 - ULTRA POPULAR CANINDE I">LOJA 11 - ULTRA POPULAR CANINDE I</option>
                         <option value="LOJA 12 - POUPE FARMA URUBURETAMA Vermelhinha">LOJA 12 - POUPE FARMA URUBURETAMA Vermelhinha</option>
                         <option value="LOJA 13 - POUPE FARMA URUBURETAMA Amarelinha">LOJA 13 - POUPE FARMA URUBURETAMA Amarelinha</option>
@@ -638,8 +638,11 @@
         let csv = BOM; // Sem cabeçalho conforme solicitado
         
         items.forEach(i => {
+            // Extrai apenas os números do nome da loja
+            const storeNumber = i.store.match(/\d+/) ? i.store.match(/\d+/)[0] : i.store;
+
             csv += [
-                i.store,
+                storeNumber, // Usa o número da loja
                 i.barcode,
                 i.lote,
                 i.qty,
