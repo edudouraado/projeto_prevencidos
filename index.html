@@ -277,7 +277,7 @@
         footer p { margin: 0.25rem 0; }
         footer strong { color: inherit; font-weight: 600; }
 
-        /* TOAST NOTIFICATIONS */
+        /* TOAST */
         #toast-container {
             position: fixed; top: 1rem; right: 1rem; z-index: 50;
             display: flex; flex-direction: column; gap: 0.5rem;
@@ -337,11 +337,7 @@
                         <option value="LOJA 07 - ULTRA POPULAR ITAPIPOCA">LOJA 07 - ULTRA POPULAR ITAPIPOCA</option>
                         <option value="LOJA 08 - ULTRA POPULAR PARAIPABA">LOJA 08 - ULTRA POPULAR PARAIPABA</option>
                         <option value="LOJA 09 - ULTRA POPULAR PARACURU">LOJA 09 - ULTRA POPULAR PARACURU</option>
-<<<<<<< HEAD
                         <option value="LOJA 10 - ULTRA POPULAR MONTESE">LOJA 10 - ULTRA POPULAR MONTESE</option>
-=======
-                        <option value="LOJA 10 - ULTRA POPULAR MONTESE">10</option>
->>>>>>> parent of 23e239b (Update index.html)
                         <option value="LOJA 11 - ULTRA POPULAR CANINDE I">LOJA 11 - ULTRA POPULAR CANINDE I</option>
                         <option value="LOJA 12 - POUPE FARMA URUBURETAMA Vermelhinha">LOJA 12 - POUPE FARMA URUBURETAMA Vermelhinha</option>
                         <option value="LOJA 13 - POUPE FARMA URUBURETAMA Amarelinha">LOJA 13 - POUPE FARMA URUBURETAMA Amarelinha</option>
@@ -443,7 +439,7 @@
 </main>
 
 <footer>
-    <p>&copy; 2025 SB Farma. Todos os direitos reservados.</p>
+    <p>&copy; 2026 SB Farma. Todos os direitos reservados.</p>
     <p>Desenvolvido por <strong>Eduardo Dourado</strong></p>
 </footer>
 
@@ -640,16 +636,13 @@
         let csv = BOM; 
         
         items.forEach(i => {
-            // Extrai número da loja e força formato texto com aspas
-            const storeNumber = i.store.match(/\d+/) ? i.store.match(/\d+/)[0] : i.store;
-
             csv += [
-                `"${storeNumber}"`, // Aspas forçam texto no Excel
+                i.store,
                 i.barcode,
                 i.lote,
                 i.qty,
-                formatDateCSV(i.mfg),
-                formatDateCSV(i.exp)
+                formatDateCSV(i.mfg), 
+                formatDateCSV(i.exp) 
             ].join(';') + '\n';
         });
 
