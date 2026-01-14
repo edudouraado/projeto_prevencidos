@@ -633,19 +633,19 @@
     // Exportar CSV
     el.exportBtn.addEventListener('click', () => {
         const BOM = "\uFEFF";
-        let csv = BOM; // Sem cabeçalho
+        let csv = BOM; 
         
         items.forEach(i => {
-            // Extrai número da loja (ex: "LOJA 10..." -> "10")
+            // Extrai APENAS O NÚMERO da loja (ex: "LOJA 10..." -> "10")
             let storeNumber = i.store.match(/\d+/);
-            storeNumber = storeNumber ? storeNumber[0] : "00"; 
+            storeNumber = storeNumber ? storeNumber[0] : ""; 
 
             csv += [
-                storeNumber, // AGORA SIM: Apenas o número "10", "01", etc
+                storeNumber, 
                 i.barcode,
                 i.lote,
                 i.qty,
-                formatDateCSV(i.mfg),
+                formatDateCSV(i.mfg), 
                 formatDateCSV(i.exp) 
             ].join(';') + '\n';
         });
